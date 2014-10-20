@@ -6,35 +6,99 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
+
 
 
 public class CheckoutMainActivity extends ActionBarActivity {
-	private ArrayList<Items> itemList;
-	
+	ArrayList<Items> itemList = new ArrayList<Items>();;
+	GridView ItemGrid;
+	CustomGridViewAdapter customGridAdapter;
+	double Total;
+	ArrayList<Items> cartItems = new ArrayList<Items>();
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_checkout_main);
-         for(int i=0; i != 10; i++)
-         {
-        	 itemList.add(new Items());
-         }
-        itemList.get(0).setItem("A man's arm",1.99);
-        itemList.get(1).setItem("Wolverine",9999.99);
-        itemList.get(2).setItem("A Bit of String",2.34);
-        itemList.get(3).setItem("FaceSucker",56.34);
-        itemList.get(4).setItem("Your Mother",0.00);
-        itemList.get(5).setItem("Armpit muncher",25.67);
-        itemList.get(6).setItem("Whoore",1.00);
-        itemList.get(7).setItem("A night at the Roxbury",300.00);
-        itemList.get(8).setItem("Sucka",3.50);
-        itemList.get(9).setItem("Morgan Freeman",0.01);
+        setContentView(R.layout.activity_checkout_main); 
+        Total = 0.00;
+        String stringdouble= Double.toString(Total);
+        EditText totalText = (EditText) findViewById(R.id.total);
+        totalText.setText(stringdouble);
         
+        itemList.add(new Items("A man's arm",1.99));
+        itemList.add(new Items("Wolverine",9999.00));
+        itemList.add(new Items("A Bit of String",2.34));
+        itemList.add(new Items("FaceSucker",56.34));
+        itemList.add(new Items("Your Mother",0.00));
+        itemList.add(new Items("Armpit muncher",25.67));
+        itemList.add(new Items("Whoore",1.00));
+        itemList.add(new Items("A night at the Roxbury",300.00));
+        itemList.add(new Items("Sucka",3.50));
+        itemList.add(new Items("Morgan Freeman",0.01));
         
+        ItemGrid = (GridView)findViewById(R.id.itemGrid);
+        customGridAdapter = new CustomGridViewAdapter(this, R.layout.row_grid, itemList);
+        ItemGrid.setAdapter(customGridAdapter);
         
-    }
 
+        ItemGrid.setOnItemClickListener(new OnItemClickListener() {
+        	@Override
+			public void onItemClick(AdapterView<?> parent, View v,
+				int position, long id) {
+				calcTotal(position);
+				addList(position);
+			}
+		});
+        
+        
+        
+    } 
+    
+    public void calcTotal(int i)
+    {
+    	double tempPrice = itemList.get(i).getPrice();
+		Total += tempPrice;
+		String stringdouble= Double.toString(Total);
+		EditText totalText = (EditText) findViewById(R.id.total);
+		totalText.setText(stringdouble);
+    }
+    public void addList(int i)
+    {
+    	String tempStr =itemList.get(i).getItem();
+    	double tempD = itemList.get(i).getPrice();
+    	cartItems.add(new Items(tempStr, tempD));
+    	ListView cList = (ListView)findViewById(R.id.cartList);
+        customGridAdapter = new CustomGridViewAdapter(this, R.layout.row_grid, cartItems);
+        cList.setAdapter(customGridAdapter);
+    	
+    	
+    	cList.setOnItemClickListener(new OnItemClickListener() {
+    		public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+    		{
+    			exterminateItem(v, position);
+    		}
+    	});
+    	
+    }
+    public void exterminateItem(View v, int position)
+    {
+    	ListView cList = (ListView)findViewById(R.id.cartList);
+    	double tempD = cartItems.get(position).getPrice();
+    	Total -= tempD;
+		String stringdouble= Double.toString(Total);
+		EditText totalText = (EditText) findViewById(R.id.total);
+		totalText.setText(stringdouble);
+    	cartItems.remove(position);
+    	customGridAdapter = new CustomGridViewAdapter(this, R.layout.row_grid, cartItems);
+        cList.setAdapter(customGridAdapter);
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

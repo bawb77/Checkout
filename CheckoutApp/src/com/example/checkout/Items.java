@@ -4,9 +4,8 @@ public class Items {
 	private String item;
 	private double price;
 
-
-
-	public void setItem(String Item, double Price) {
+	public Items(String Item, double Price)
+	{
 		item = Item;
 		price = Price;
 	}
