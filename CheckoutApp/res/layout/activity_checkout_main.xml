@@ -74,7 +74,24 @@
                 android:id="@+id/checkoutButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="checkOut"
                 android:text="@string/checkout" />
+
+            <ToggleButton
+                android:id="@+id/Discount5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="Dis5"
+                android:textOff="@string/dis5"
+                android:textOn="@string/dis5" />
+
+            <ToggleButton
+                android:id="@+id/Discount10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="Dis10"
+                android:textOff="@string/dis10"
+                android:textOn="@string/dis10" />
 
         </LinearLayout>
 

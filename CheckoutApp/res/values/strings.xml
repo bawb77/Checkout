@@ -8,5 +8,8 @@
     <string name="total">Total</string>
     <string name="price">Price</string>
     <string name="confirm">Confirm</string>
+    <string name="dis5">-5%</string>
+    <string name="dis10">-10%</string>
+    <string name="payment">Payment Type</string>
 
 </resources>
